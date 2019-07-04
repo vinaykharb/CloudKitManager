@@ -1,9 +1,7 @@
 //
 //  CloudKitManager.swift
-//  CloudKitHelper
 //
 //  Created by Vinay Kharb on 7/1/19.
-//  Copyright © 2019 Fueled. All rights reserved.
 //
 
 import Foundation
