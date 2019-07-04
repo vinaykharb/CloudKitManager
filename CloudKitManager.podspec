@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'CloudKitManager'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'CRUD operations for the Apple CloudKit integration.'
  
   s.description      = <<-DESC
