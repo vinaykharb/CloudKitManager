@@ -15,5 +15,7 @@ CRUD operations for the Apple CloudKit integration. Can be used in a reactive wa
   s.ios.deployment_target = '11.0'
   s.swift_version = '5.0'
   s.source_files = 'CloudKitManager.swift'
- 
+  s.dependency 'ReactiveSwift'
+  s.dependency 'Result'
+  
 end

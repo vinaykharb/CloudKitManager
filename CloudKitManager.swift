@@ -25,7 +25,7 @@ open class CloudKitManager {
 		return self.container.database(with: self.scope)
 	}
 
-	init(with scope: CKDatabase.Scope) {
+	public init(with scope: CKDatabase.Scope) {
 		self.scope = scope
 	}
 
@@ -55,11 +55,11 @@ open class CloudKitManager {
 	}
 	#endif
 
-	typealias RecordsClosure = ([CKRecord]?, Error?) -> Void
-	typealias RecordClosure = (CKRecord?, Error?) -> Void
+	public typealias RecordsClosure = ([CKRecord]?, Error?) -> Void
+	public typealias RecordClosure = (CKRecord?, Error?) -> Void
 
 	#if canImport(ReactiveSwift) && canImport(Result)
-	func fetchRecords(_ query: CKQuery) -> SignalProducer<[CKRecord]?, AnyError> {
+	public func fetchRecords(_ query: CKQuery) -> SignalProducer<[CKRecord]?, AnyError> {
 		return self.requestAccountStatus()
 			.filter { $0 == .available }
 			.then(self.perform(query: query))
@@ -78,7 +78,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func saveRecord(_ record: CKRecord) -> SignalProducer<CKRecord?, AnyError> {
+	public func saveRecord(_ record: CKRecord) -> SignalProducer<CKRecord?, AnyError> {
 		return self.requestAccountStatus()
 			.filter { $0 == .available }
 			.then(self.save(record: record))
@@ -99,7 +99,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func saveRecords(_ records: [CKRecord]) -> SignalProducer<[CKRecord], AnyError> {
+	public func saveRecords(_ records: [CKRecord]) -> SignalProducer<[CKRecord], AnyError> {
 		return self.requestAccountStatus()
 			.filter { $0 == .available }
 			.then(self.save(records: records))
@@ -126,7 +126,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func updateRecord(_ record: CKRecord) -> SignalProducer<CKRecord?, AnyError> {
+	public func updateRecord(_ record: CKRecord) -> SignalProducer<CKRecord?, AnyError> {
 		return self.requestAccountStatus()
 			.filter { $0 == .available }
 			.then(self.update(record: record))
@@ -151,7 +151,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func updateRecords(_ records: [CKRecord]? = nil, recordsToDelete: [CKRecord]? = nil) -> SignalProducer<[CKRecord]?, AnyError> {
+	public func updateRecords(_ records: [CKRecord]? = nil, recordsToDelete: [CKRecord]? = nil) -> SignalProducer<[CKRecord]?, AnyError> {
 		return self.requestAccountStatus()
 			.filter { $0 == .available }
 			.then(self.update(records: records, recordsToDelete: recordsToDelete))
@@ -177,7 +177,7 @@ open class CloudKitManager {
 		}
 	}
 	#else
-	func fetchRecords(_ query: CKQuery, completion: @escaping RecordsClosure) {
+	public func fetchRecords(_ query: CKQuery, completion: @escaping RecordsClosure) {
 		self.requestAccountStatus { (accountStatus, error) in
 			if let accountStatus = accountStatus, accountStatus == .available {
 				self.fetch(query: query, completion: completion)
@@ -195,7 +195,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func saveRecord(_ record: CKRecord, completion: @escaping RecordClosure) {
+	public func saveRecord(_ record: CKRecord, completion: @escaping RecordClosure) {
 		self.requestAccountStatus { (accountStatus, error) in
 			if let accountStatus = accountStatus, accountStatus == .available {
 				self.save(record: record, completion: completion)
@@ -215,7 +215,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func saveRecords(_ records: [CKRecord], completion: @escaping RecordsClosure) {
+	public func saveRecords(_ records: [CKRecord], completion: @escaping RecordsClosure) {
 		self.requestAccountStatus { (accountStatus, error) in
 			if let accountStatus = accountStatus, accountStatus == .available {
 				self.save(records: records, completion: completion)
@@ -241,7 +241,7 @@ open class CloudKitManager {
 		}
 	}
 
-	func updateRecord(_ record: CKRecord, completion: @escaping RecordClosure) {
+	public func updateRecord(_ record: CKRecord, completion: @escaping RecordClosure) {
 		self.requestAccountStatus { (accountStatus, error) in
 			if let accountStatus = accountStatus, accountStatus == .available {
 				self.update(record: record, completion: completion)
@@ -265,7 +265,7 @@ open class CloudKitManager {
 		self.database.add(updateOperation)
 	}
 
-	func updateRecords(_ records: [CKRecord]? = nil, recordsToDelete: [CKRecord]? = nil, completion: @escaping RecordsClosure) {
+	public func updateRecords(_ records: [CKRecord]? = nil, recordsToDelete: [CKRecord]? = nil, completion: @escaping RecordsClosure) {
 		self.requestAccountStatus { (accountStatus, error) in
 			if let accountStatus = accountStatus, accountStatus == .available {
 				self.update(records: records, recordsToDelete: recordsToDelete, completion: completion)
