@@ -35,7 +35,6 @@ open class CloudKitManager {
 		return SignalProducer { observer, _ in
 			self.container.accountStatus { (accountStatus, error) in
 				if let responseError = error {
-					stardustLog("error getting status for cloud services: \(responseError.localizedDescription)")
 					observer.send(error: AnyError(responseError))
 				} else {
 					observer.send(value: accountStatus)
@@ -48,7 +47,6 @@ open class CloudKitManager {
 	private func requestAccountStatus(completion: @escaping (CKAccountStatus?, Error?) -> Void) {
 		self.container.accountStatus { (accountStatus, error) in
 			if let responseError = error {
-				print("error getting status for cloud services: \(responseError.localizedDescription)")
 				completion(nil, responseError)
 			} else {
 				completion(accountStatus, nil)
@@ -71,10 +69,8 @@ open class CloudKitManager {
 		return SignalProducer { observer, _ in
 			self.database.perform(query, inZoneWith: nil) { (record, error) in
 				if let responseError = error {
-					stardustLog("error fetching record: \(String(describing: responseError)))")
 					observer.send(error: AnyError(responseError))
 				} else {
-					stardustLog("record fetched: \(String(describing: record))")
 					observer.send(value: record)
 					observer.sendCompleted()
 				}
@@ -93,10 +89,8 @@ open class CloudKitManager {
 			self.database.save(record) { (record, error) in
 				DispatchQueue.main.async {
 					if let responseError = error {
-						stardustLog("error saving record: \(String(describing: responseError)))")
 						observer.send(error: AnyError(responseError))
 					} else {
-						stardustLog("record saved: \(String(describing: record))")
 						observer.send(value: record)
 						observer.sendCompleted()
 					}
@@ -118,10 +112,8 @@ open class CloudKitManager {
 				self.database.save($0) { (record, error) in
 					DispatchQueue.main.async {
 						if let responseError = error {
-							stardustLog("error saving record: \(String(describing: responseError)))")
 							observer.send(error: AnyError(responseError))
 						} else if let record = record {
-							stardustLog("record saved: \(record)")
 							result.append(record)
 							if result.count == records.count {
 								observer.send(value: result)
@@ -148,10 +140,8 @@ open class CloudKitManager {
 			updateOperation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
 				DispatchQueue.main.async {
 					if let responseError = error {
-						stardustLog("error updating record: \(String(describing: responseError)))")
 						observer.send(error: AnyError(responseError))
 					} else {
-						stardustLog("record updated: \(String(describing: record))")
 						observer.send(value: savedRecords?.first)
 						observer.sendCompleted()
 					}
@@ -176,10 +166,8 @@ open class CloudKitManager {
 			updateOperation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
 				DispatchQueue.main.async {
 					if let responseError = error {
-						stardustLog("error updating records: \(String(describing: responseError)))")
 						observer.send(error: AnyError(responseError))
 					} else {
-						stardustLog("records updated: \(String(describing: savedRecords))")
 						observer.send(value: savedRecords)
 						observer.sendCompleted()
 					}
@@ -200,10 +188,8 @@ open class CloudKitManager {
 	private func fetch(query: CKQuery, completion: @escaping RecordsClosure) {
 		self.database.perform(query, inZoneWith: nil) { (records, error) in
 			if let responseError = error {
-				print("error fetching record: \(String(describing: responseError)))")
 				completion(nil, responseError)
 			} else {
-				print("records fetched: \(String(describing: records))")
 				completion(records, nil)
 			}
 		}
@@ -221,10 +207,8 @@ open class CloudKitManager {
 		self.database.save(record) { (record, error) in
 			DispatchQueue.main.async {
 				if let responseError = error {
-					print("error saving record: \(String(describing: responseError)))")
 					completion(nil, responseError)
 				} else {
-					print("record saved: \(String(describing: record))")
 					completion(record, nil)
 				}
 			}
@@ -245,10 +229,8 @@ open class CloudKitManager {
 			self.database.save($0) { (record, error) in
 				DispatchQueue.main.async {
 					if let responseError = error {
-						print("error saving records: \(String(describing: responseError)))")
 						completion(nil, responseError)
 					} else if let record = record {
-						print("records saved: \(record)")
 						result.append(record)
 						if result.count == records.count {
 							completion(result, nil)
@@ -274,10 +256,8 @@ open class CloudKitManager {
 		updateOperation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
 			DispatchQueue.main.async {
 				if let responseError = error {
-					print("error updating record: \(String(describing: responseError)))")
 					completion(nil, responseError)
 				} else {
-					print("record updated: \(String(describing: record))")
 					completion(savedRecords?.first, nil)
 				}
 			}
@@ -301,10 +281,8 @@ open class CloudKitManager {
 		updateOperation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
 			DispatchQueue.main.async {
 				if let responseError = error {
-					print("error updating records: \(String(describing: responseError)))")
 					completion(nil, responseError)
 				} else {
-					print("records updated: \(String(describing: savedRecords))")
 					completion(savedRecords, nil)
 				}
 			}
